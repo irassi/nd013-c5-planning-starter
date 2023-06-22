@@ -185,7 +185,7 @@ State BehaviorPlannerFSM::state_transition(const State& ego_state, State goal,
     if (distance_to_stop_sign <= P_STOP_THRESHOLD_DISTANCE) {
       // TODO-move to STOPPED state: Now that we know we are close or at the
       // stopping point we should change state to "STOPPED"
-      _active_maneuver = STOPPED;  // <- Fix This
+      _active_maneuver = STOPPED;  
       _start_stop_time = std::chrono::high_resolution_clock::now();
       // LOG(INFO) << "BP - changing to STOPPED";
     }
