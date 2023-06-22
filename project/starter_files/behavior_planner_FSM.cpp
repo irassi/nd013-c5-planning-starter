@@ -77,7 +77,7 @@ double BehaviorPlannerFSM::get_look_ahead_distance(const State& ego_state) {
   // TODO-Lookahead: One way to find a reasonable lookahead distance is to find
   // the distance you will need to come to a stop while traveling at speed V and
   // using a comfortable deceleration.
-  auto look_ahead_distance = 1.0;  // <- Fix This
+  auto look_ahead_distance = (velocity_mag * velocity_mag) / (2.0 * accel_mag);  // <- Fix This
 
   // LOG(INFO) << "Calculated look_ahead_distance: " << look_ahead_distance;
 
@@ -139,24 +139,26 @@ State BehaviorPlannerFSM::state_transition(const State& ego_state, State goal,
       // use cosine and sine to get x and y
       //
       auto ang = goal.rotation.yaw + M_PI;
-      goal.location.x += 1.0;  // <- Fix This
-      goal.location.y += 1.0;  // <- Fix This
+      goal.location.x += _stop_line_buffer * std::cos(ang);
+      goal.location.y += _stop_line_buffer * std::sin(ang);
 
       // LOG(INFO) << "BP- new STOP goal at: " << goal.location.x << ", "
       //          << goal.location.y;
 
       // TODO-goal speed at stopping point: What should be the goal speed??
-      goal.velocity.x = 1.0;  // <- Fix This
-      goal.velocity.y = 1.0;  // <- Fix This
-      goal.velocity.z = 1.0;  // <- Fix This
+      //ANSWER: Goal speed should be 0 if stopping is the goal
+      goal.velocity.x = 0.0;  // <- Fix This
+      goal.velocity.y = 0.0;  // <- Fix This
+      goal.velocity.z = 0.0;  // <- Fix This
 
     } else {
       // TODO-goal speed in nominal state: What should be the goal speed now
       // that we know we are in nominal state and we can continue freely?
       // Remember that the speed is a vector
       // HINT: _speed_limit * std::sin/cos (goal.rotation.yaw);
-      goal.velocity.x = 1.0;  // <- Fix This
-      goal.velocity.y = 1.0;  // <- Fix This
+      //ANSWER: Speed should be 
+      goal.velocity.x = _speed_limit * std::cos(goal.rotation.yaw);
+      goal.velocity.y = _speed_limit * std::sin(goal.rotation.yaw);
       goal.velocity.z = 0;
     }
 
