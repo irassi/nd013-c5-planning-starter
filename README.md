@@ -4,4 +4,4 @@ This repository contains the my submission for the Udacity Self Driving Car Engi
 
 
 
-![Screenshot](project/starter_files/Screenshot.png)
+![Screenshot](project/Screenshot.png)
